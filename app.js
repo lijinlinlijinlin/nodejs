@@ -54,14 +54,11 @@ if ('development' == app.get('env')) {
 //basic
 app.get('/', routes.index);
 
-app.all('/login', notAuthentication);
 app.get('/login', routes.login);
 app.post('/login', routes.doLogin);
 
-app.get('/logout', authentication);
 app.get('/logout', routes.logout);
 
-app.get('/home', authentication);
 app.get('/home', routes.home);
 
 
@@ -80,18 +77,3 @@ http.createServer(app).listen(app.get('port'), function(){
 });
 
 
-function authentication(req, res, next) {
-  if (!req.session.user) {
-    req.session.error='请先登陆';
-    return res.redirect('/login');
-  }
-  next();
-}
-
-function notAuthentication(req, res, next) {
-	if (req.session.user) {
-    	req.session.error='已登陆';
-    	return res.redirect('/');
-  	}
-  next();
-}
